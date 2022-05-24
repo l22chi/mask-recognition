@@ -1,6 +1,7 @@
 # files and folders
 .vscode
 *.jpg
+*.jpeg
 *.png
 venv/
 R-CNN-object-detection/
