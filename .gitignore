@@ -9,7 +9,7 @@ selective-search/
 object-detection-(image)/
 object-detection-(video)/
 region-proposal-detection/
-CNN-object -classifier/
+CNN-object-classifier/
 classifiers-constructor/
 .DS_Store
 
