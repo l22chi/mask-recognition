@@ -32,6 +32,19 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     brew install git
     echo -e "${GREEN}[SUCCESS] Succefully installed${NC}"
 
+    echo -e "${YELLOW}[INFO] Installing cmake and all its dependencies${NC}"
+    brew install cmake
+    echo -e "${GREEN}[SUCCESS] Succefully installed${NC}"
+
+    echo -e "${YELLOW}[INFO] Building OpenCV and compiling createsamples and trainhaarcascade${NC}"
+    git clone https://github.com/opencv/opencv.git
+    mkdir build_opencv
+    cd build_opencv
+    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv
+    make -j7
+    echo -e "${GREEN}[SUCCESS] OpenCV core modules succefully compiled${NC}"
+
+
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
     sudo apt-get update
@@ -46,6 +59,13 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt-get install python3-pip
     sudo apt-get install libopencv-dev
     sudo apt-get install git
+
+    sudo apt install -y cmake g++ wget unzip
+    wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip
+    unzip opencv.zip
+    mkdir -p build && cd build
+    cmake  ../opencv-4.x
+    cmake --build .
 
 fi
 
