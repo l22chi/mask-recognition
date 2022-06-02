@@ -49,6 +49,16 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 fi
 
+cd $SCRIPT_DIR
+
+echo -e "${RED}[WARNING] You need to have Docker installed to continue !${NC}"
+
+echo -e "${YELLOW}[INFO] Building Docker image FROM dockerfile : $CURRENT${NC}"
+
+sudo docker build -t opencv-image docker
+
+echo -e "${GREEN}[SUCCESS] Docker image has been built.${NC}"
+
 echo -e "${RED}[WARNING] Executing this script will create a virtual environment venv in the current working directory !${NC}"
 
 cd $SCRIPT_DIR
