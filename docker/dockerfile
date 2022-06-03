@@ -1,11 +1,7 @@
 FROM ubuntu:latest
 RUN apt-get -y update
 RUN apt-get -y install git cmake g++ wget unzip
-RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip
-RUN unzip opencv.zip
-RUN mkdir -p build && cd build
-RUN cmake  ../opencv-4.x
-RUN cmake  ../opencv-4.x
-RUN cd ..
+RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.zip
+RUN mkdir -p build
 RUN mkdir workspace && cd workspace && mkdir classifiers-constructor
 COPY classifiers-constructor/dataset workspace/classifiers-constructor

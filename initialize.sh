@@ -43,6 +43,14 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv
     make -j7
     echo -e "${GREEN}[SUCCESS] OpenCV core modules succefully compiled${NC}"
+    echo -e "${YELLOW}[WARNING] If your OpenCV version is above 3.4.x you won't be able to use createsamples and trainhaarcascade commands. To do so, build the docker image with OpenCV 3.4${NC}"
+    echo -e "${YELLOW}[WARNING] The annotation tool provided by OpenCV need a graphical interface and work on latest versions of OpenCV (above 3.4.x) but won't run on the docker image${NC}"
+    echo "Do you want to build the corresponding docker image ? [y/n]"
+    read YES_OR_NO
+
+    if [ "$YES_OR_NO" = "yes" ] || [ "$YES_OR_NO" = "y" ]; then
+        sudo docker build -t opencv-image docker
+        echo -e "${GREEN}[SUCCESS] Image succefully built. Please now use cmake to build OpenCV-3.4 archives. If get any troubles building it, please refers to the image doc on : ${NC}https://hub.docker.com/repository/docker/l22chi/opencv-ubuntu"
 
 
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -61,10 +69,10 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt-get install git
 
     sudo apt install -y cmake g++ wget unzip
-    wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip
+    wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.zip
     unzip opencv.zip
     mkdir -p build && cd build
-    cmake  ../opencv-4.x
+    cmake  ../opencv-3.4
     cmake --build .
 
 fi
