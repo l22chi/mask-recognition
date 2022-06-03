@@ -5,7 +5,7 @@
 
 ## Structure
 
->classifiers-constructor<br>
+><p>classifiers-constructor<br>
 >    |---- dataset<br>
 >    |        |---- annotations<br>
 >    |        |---- images<br>
@@ -17,4 +17,4 @@
 >    |<br>
 >    |---- makeNeg.py<br>
 >    |---- roi_maker.py<br>
->    |---- take_photos.py<br>
+>    |---- take_photos.py<br></p>
