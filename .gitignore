@@ -1,4 +1,6 @@
 # files and folders
+opencv/build
+opencv/opencv-3.4
 .vscode
 *.jpg
 *.jpeg

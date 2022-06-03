@@ -3,6 +3,7 @@ RUN apt-get -y update
 RUN apt-get -y install git cmake g++ wget unzip
 RUN mkdir workspace
 RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.zip
+RUN unzip opencv.zip
 RUN mkdir -p build && cd build
 RUN cmake  ../opencv-3.4
 RUN make -j4

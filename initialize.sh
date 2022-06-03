@@ -41,7 +41,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     echo -e "${GREEN}[SUCCESS] Succefully installed${NC}"
 
     echo -e "${YELLOW}[INFO] Installing g++ and all its dependencies${NC}"
-    brew install g++
+    brew install gcc
     echo -e "${GREEN}[SUCCESS] Succefully installed${NC}"
 
     echo -e "${YELLOW}[INFO] Building and installing OpenCV${NC}"
