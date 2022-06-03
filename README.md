@@ -35,15 +35,21 @@ This operation is possible for POSIX systems (Unix / Linux based systems). This 
 Si vous n'utilisez pas le script 'initialize.sh', il est tout de même possible d'utiliser le script 'env.sh' pour faciliter l'utilisation de l'environnement virtuel.
 Pour cela, veuillez lancer le script en mode 'source' :
 
-> <code>source env.sh</code>
+> ```bash
+> source env.sh
+>```
 
 Please note that you can also make this script executable through the following command:
 
-> <code>chmod +x /env.sh</code>
+> ```bash
+> chmod +x /env.sh
+>```
 
 To deactivate the virtual environment, use the following command:
 
-> <code>deactivate</code>
+> ```bash
+> deactivate
+>```
 
 Please note that you must be in the same session in which 'env.sh' was launched if you want to use these commands (if you close and reopen a console, or change console, you will have to rerun 'env.sh').
 
@@ -52,14 +58,18 @@ Please note that you must be in the same session in which 'env.sh' was launched 
 
 At the root of this project you will find a folder named 'docker' containing a dockerfile from which you can manually mount the image containing the stable version of OpenCV 3.4.0. Once mounted, you can launch the container with the following command:
 
-> <code>docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]</code>
+> ```bash
+> docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
+>```
 
 You can use the -it parameter and bash to launch the container in interactive mode through a CLI window to access OpenCV commands (c.f. official Docker documentation: https://docs.docker.com/engine/reference/run/).
 
 You also have the possibility to mount the image containing the stable version of OpenCV 3.4.0 directly from Docker Hub (https://hub.docker.com/repository/docker/l22chi/opencv-ubuntu).
 Note that if you are using a version of OpenCV from an image, you will need to create a gateway between your host system and the Docker container in order to access your data (images, .info files etc.) when using OpenCV commands (e.g. opencv_createsamples, opencv_traincascade). You can also copy your data folder as soon as the image is mounted by configuring the COPY line of the dockerfile (by default it is configured to copy data from the classifiers-constructor folder). The structure is as follows:
 
-> <code>COPY [RELATIVE PATH OF FILES / DIRS TO COPY ON THE HOST SYSTEM] [ABSOLUTEE PATH ON THE IMAGE]</code>
+> ```bash
+> COPY [RELATIVE PATH OF FILES / DIRS TO COPY ON THE HOST SYSTEM] [ABSOLUTEE PATH ON THE IMAGE]
+>```
 
 # OpenCV folder
 
