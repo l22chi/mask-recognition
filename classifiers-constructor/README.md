@@ -18,5 +18,4 @@
 │   ├── makeNeg.py
 │   ├── roi_maker.py
 │   └── take_photos.py
-
 ```

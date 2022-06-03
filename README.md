@@ -28,7 +28,7 @@ The required steps are minimal steps necessary in order to run the programs from
 
 This operation is possible for POSIX systems (Unix / Linux based systems). This script also launches another script named 'env.sh' which allows you to activate the virtual environment with the following command:
 
-> <code>activate</code>
+> bash<code>activate</code>
 
 Si vous n'utilisez pas le script 'initialize.sh', il est tout de même possible d'utiliser le script 'env.sh' pour faciliter l'utilisation de l'environnement virtuel.
 Pour cela, veuillez lancer le script en mode 'source' :
