@@ -5,6 +5,8 @@ opencv/opencv-3.4
 *.jpg
 *.jpeg
 *.png
+*webp
+*.crdownload
 venv/
 R-CNN-object-detection/
 selective-search/
@@ -12,7 +14,8 @@ object-detection-(image)/
 object-detection-(video)/
 region-proposal-detection/
 CNN-object-classifier/
-classifiers-constructor/
+classifiers-constructor/haarcascade.sh
+
 .DS_Store
 
 
