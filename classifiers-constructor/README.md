@@ -5,16 +5,16 @@
 
 ## Structure
 
->classifiers-constructor
->    |---- dataset
->    |        |---- annotations
->    |        |---- images
->    |               |---- masked
->    |               |---- neg
->    |               |---- samples
->    |               |---- bg.txt
->    |               |---- info.txt
->    |
->    |---- makeNeg.py
->    |---- roi_maker.py
->    |---- take_photos.py
+>classifiers-constructor<br>
+>    |---- dataset<br>
+>    |        |---- annotations<br>
+>    |        |---- images<br>
+>    |               |---- masked<br>
+>    |               |---- neg<br>
+>    |               |---- samples<br>
+>    |               |---- bg.txt<br>
+>    |               |---- info.txt<br>
+>    |<br>
+>    |---- makeNeg.py<br>
+>    |---- roi_maker.py<br>
+>    |---- take_photos.py<br>
