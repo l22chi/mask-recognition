@@ -220,8 +220,8 @@ Note: you are not obliged to use the htop command, the latter just allows you to
 
 In order to specify the size of the buffers and to speed up / optimize the execution time, you can specify the following parameters:
 
--precalcValBufSize ***precalculated_vals_buffer_size_in_Mb*** : Size of buffer for precalculated feature values (in Mb). The more memory you assign the faster the training process, however keep in mind that -precalcValBufSize and -precalcIdxBufSize combined should not exceed you available system memory.
--precalcIdxBufSize ***precalculated_idxs_buffer_size_in_M*** : Size of buffer for precalculated feature indices (in Mb). The more memory you assign the faster the training process, however keep in mind that -precalcValBufSize and -precalcIdxBufSize combined should not exceed you available system memory.
--numThreads ***max_number_of_threads*** : Maximum number of threads to use during training. Notice that the actual number of used threads may be lower, depending on your machine and compilation options. By default, the maximum available threads are selected if you built OpenCV with TBB support, which is needed for this optimization.
+- precalcValBufSize ***precalculated_vals_buffer_size_in_Mb*** : Size of buffer for precalculated feature values (in Mb). The more memory you assign the faster the training process, however keep in mind that -precalcValBufSize and -precalcIdxBufSize combined should not exceed you available system memory.
+- precalcIdxBufSize ***precalculated_idxs_buffer_size_in_M*** : Size of buffer for precalculated feature indices (in Mb). The more memory you assign the faster the training process, however keep in mind that -precalcValBufSize and -precalcIdxBufSize combined should not exceed you available system memory.
+- numThreads ***max_number_of_threads*** : Maximum number of threads to use during training. Notice that the actual number of used threads may be lower, depending on your machine and compilation options. By default, the maximum available threads are selected if you built OpenCV with TBB support, which is needed for this optimization.
 
 ## Or, let yourself be guided by the automatic training of the haarcascade file (autorun.sh)
