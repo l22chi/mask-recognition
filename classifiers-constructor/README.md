@@ -42,8 +42,8 @@ Please note that information files are by default in '.txt' format but '.dat' an
 When this script is launched, it accesses the user's webam (noted that permission will be requested) and takes care of taking by default:
 - 200 tagged photos of the 'masked' class every 3 seconds (default configuration)
 You can change the parameters of the script in order to adapt the model to your needs:
-- <number_imgs>: number of images taken per class (200 by default)
-- <labels>: list comprising the titles of the desired classes (by default 'masked' only)
+- ***number_imgs***: number of images taken per class (200 by default)
+- ***labels***: list comprising the titles of the desired classes (by default 'masked' only)
 
 By default the waiting time between taking two photos is 3 seconds but you can change it. The waiting time for class change is 10 seconds (you can also change it).
 
@@ -130,8 +130,8 @@ If you already have your positive images and you want to create the vector file 
 opencv_createsamples -vec pos.vec --info dataset/images/info.txt -num 100
 ```
 Remarks :
-- The indication of <w> and <h> undergoes the same remarks as stated previously
-- <num> corresponds to the number of positive images to use to create the .vec file (it must be at most equal to the number of positive images you have)
+- The indication of ***w*** and ***h*** undergoes the same remarks as stated previously
+- ***num*** corresponds to the number of positive images to use to create the .vec file (it must be at most equal to the number of positive images you have)
 - If your OpenCV is misconfigured (e.g. "error witth opencv_createsamples, command not found" you may need to indicate the path to the executable and change the other parameter paths accordingly, for example:
 ```bash
 opencv/build/bin/opencv_createsamples -vec pos.vec --info dataset/images/info.txt
@@ -147,13 +147,13 @@ You should now have the following:
 The process now consists of training the model and saving it in .xml format (haarcascade.xml). This is the simplest step but also the longest and the most resource-intensive. It is strongly advised to perform this step with small parameter values ​​in order to see and understand how this step behaves before going to the next level.
 
 To use the opencv_traincascade tool, you must enter these different parameters:
-- <data>: the location where you want this file to be saved
-- <vec>: the location of the file containing the positive samples
-- <bg>: the location of the file containing the negative samples
-- <numPos>: the number of positive images to use (concerning this parameter, it will inform you of a number of positive images to use **LOWER** than the number of positive images you have, because if the training of a haarcascade step runs out of images, training stops, no longer having positive images)
-- <numNeg>: the number of negative images to use (must be equal to half the number of positive samples to be used)
+- ***data***: the location where you want this file to be saved
+- ***vec***: the location of the file containing the positive samples
+- ***bg***: the location of the file containing the negative samples
+- ***numPos***: the number of positive images to use (concerning this parameter, it will inform you of a number of positive images to use **LOWER** than the number of positive images you have, because if the training of a haarcascade step runs out of images, training stops, no longer having positive images)
+- ***numNeg***: the number of negative images to use (must be equal to half the number of positive samples to be used)
 - numStages: the number of stages to train (the equivalent of epochs, the larger it is, the more time-consuming the operation will be)
-- <w> & <h>: size of the training samples (they must be exactly the same size as during the sample creation process (opencv_createsamples, the larger they were during the sample creation process, the more this operation will be time consuming
+- ***w*** & ***h***: size of the training samples (they must be exactly the same size as during the sample creation process (opencv_createsamples, the larger they were during the sample creation process, the more this operation will be time consuming
 
 In case you used opencv_createsamples:
 
@@ -220,8 +220,8 @@ Note: you are not obliged to use the htop command, the latter just allows you to
 
 In order to specify the size of the buffers and to speed up / optimize the execution time, you can specify the following parameters:
 
--precalcValBufSize <precalculated_vals_buffer_size_in_Mb> : Size of buffer for precalculated feature values (in Mb). The more memory you assign the faster the training process, however keep in mind that -precalcValBufSize and -precalcIdxBufSize combined should not exceed you available system memory.
--precalcIdxBufSize <precalculated_idxs_buffer_size_in_Mb> : Size of buffer for precalculated feature indices (in Mb). The more memory you assign the faster the training process, however keep in mind that -precalcValBufSize and -precalcIdxBufSize combined should not exceed you available system memory.
--numThreads <max_number_of_threads> : Maximum number of threads to use during training. Notice that the actual number of used threads may be lower, depending on your machine and compilation options. By default, the maximum available threads are selected if you built OpenCV with TBB support, which is needed for this optimization.
+-precalcValBufSize ***precalculated_vals_buffer_size_in_Mb*** : Size of buffer for precalculated feature values (in Mb). The more memory you assign the faster the training process, however keep in mind that -precalcValBufSize and -precalcIdxBufSize combined should not exceed you available system memory.
+-precalcIdxBufSize ***precalculated_idxs_buffer_size_in_M*** : Size of buffer for precalculated feature indices (in Mb). The more memory you assign the faster the training process, however keep in mind that -precalcValBufSize and -precalcIdxBufSize combined should not exceed you available system memory.
+-numThreads ***max_number_of_threads*** : Maximum number of threads to use during training. Notice that the actual number of used threads may be lower, depending on your machine and compilation options. By default, the maximum available threads are selected if you built OpenCV with TBB support, which is needed for this optimization.
 
 ## Or, let yourself be guided by the automatic training of the haarcascade file (autorun.sh)
