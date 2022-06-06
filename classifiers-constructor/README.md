@@ -23,6 +23,8 @@ The different steps and different processes described below are simplified. That
 │   │        ├── samples
 │   │        ├── bg.txt
 │   │        └── info.txt
+│   ├── README.md
+│   ├── autorun.sh
 │   ├── makeNeg.py
 │   ├── roi_maker.py
 │   └── take_photos.py
