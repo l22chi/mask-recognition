@@ -225,3 +225,6 @@ In order to specify the size of the buffers and to speed up / optimize the execu
 - numThreads ***max_number_of_threads*** : Maximum number of threads to use during training. Notice that the actual number of used threads may be lower, depending on your machine and compilation options. By default, the maximum available threads are selected if you built OpenCV with TBB support, which is needed for this optimization.
 
 ## Or, let yourself be guided by the automatic training of the haarcascade file (autorun.sh)
+
+If you want to perform these steps automatically, you can run 'autorun.sh' and let yourself be guided. Please, however, check the content of this script to be sure that it corresponds to your needs / configurations.
+The default values ​​of 'autorun.sh' are those required for a minimum training configuration of a haarcascade file.
