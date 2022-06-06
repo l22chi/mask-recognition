@@ -6,7 +6,7 @@ The models built in this project use haarcascade features trained with OpenCV.
 Positive images were annotated with OpenCV (version 4.5.5, but works on 3.4.0 which is the version required on this project) and the opencv_annotation tool (using a GUI).
 
 Concerning the training of the haarcascade and the creation of several positive samples, they were respectively carried out with the tools opencv_createsamples and opencv_traincascade of OpenCV. These two applications cannot be called with a classic installation of OpenCV (versions greater than 3.4.x) a docker image based on Ubuntu (latest) with a pre-download of the OpenCV version 3.4 archive is necessary (if you don't want to build the OpenCV library on your local environment).
-To use these tools it is necessary to build this image and use it via the CLI window of this one. For this you can refer to the documentation of the image on the Docker Hub (https://hub.docker.com/repository/docker/l22chi/opencv-ubuntu) or let yourself be guided by the automatic installation with initialize .sh (local installation)
+To use these tools it is necessary to build this image and use it via the CLI window of this one. For this you can refer to the documentation of the image on the [Docker Hub](https://hub.docker.com/repository/docker/l22chi/opencv-ubuntu) or let yourself be guided by the automatic installation with initialize .sh (local installation)
 
 # Automatic installation with initialize.sh
 
@@ -62,9 +62,9 @@ At the root of this project you will find a folder named 'docker' containing a d
 > docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
 >```
 
-You can use the -it parameter and bash to launch the container in interactive mode through a CLI window to access OpenCV commands (c.f. official Docker documentation: https://docs.docker.com/engine/reference/run/).
+You can use the -it parameter and bash to launch the container in interactive mode through a CLI window to access OpenCV commands (c.f. [official Docker documentation](https://docs.docker.com/engine/reference/run/)).
 
-You also have the possibility to mount the image containing the stable version of OpenCV 3.4.0 directly from Docker Hub (https://hub.docker.com/repository/docker/l22chi/opencv-ubuntu).
+You also have the possibility to mount the image containing the stable version of OpenCV 3.4.0 directly from [Docker Hub](https://hub.docker.com/repository/docker/l22chi/opencv-ubuntu).
 Note that if you are using a version of OpenCV from an image, you will need to create a gateway between your host system and the Docker container in order to access your data (images, .info files etc.) when using OpenCV commands (e.g. opencv_createsamples, opencv_traincascade). You can also copy your data folder as soon as the image is mounted by configuring the COPY line of the dockerfile (by default it is configured to copy data from the classifiers-constructor folder). The structure is as follows:
 
 > ```bash
