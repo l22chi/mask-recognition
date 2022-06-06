@@ -12,7 +12,6 @@ R-CNN-object-detection/
 selective-search/
 object-detection-(image)/
 region-proposal-detection/
-CNN-object-classifier/
 classifiers-constructor/haarcascade.sh
 
 .DS_Store
