@@ -19,6 +19,7 @@ The different steps and different processes described below are simplified. That
 │   │   ├── annotations
 │   │   └──  images
 │   │        ├── masked
+│   │        ├── not_masked
 │   │        ├── neg
 │   │        ├── samples
 │   │        ├── bg.txt
