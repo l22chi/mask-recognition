@@ -110,6 +110,9 @@ print_every = 5
 train_losses, test_losses = [], []
 
 for epoch in range(epochs):
+
+    epoch += 1
+
     for inputs, labels in trainloader:
 
         steps += 1
@@ -139,7 +142,7 @@ for epoch in range(epochs):
 
             train_losses.append(running_loss/len(trainloader))
             test_losses.append(test_loss/len(testloader))                    
-            print(f"Epoch {epoch+1}/{epochs}.. "
+            print(f"Epoch {epoch}/{epochs}.. "
                   f"Train loss: {running_loss/print_every:.3f}.. "
                   f"Test loss: {test_loss/len(testloader):.3f}.. "
                   f"Test accuracy: {accuracy/len(testloader):.3f}")
