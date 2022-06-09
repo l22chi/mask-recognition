@@ -8,7 +8,7 @@ def create_neg(path=os.path.dirname(os.path.realpath(__file__))):
         if not img.startswith('.'):
             if not img.endswith('.webp'):
                 if not img.endswith('.crdownload'):
-                    line = 'dataset/images/neg/' + str(img) + '\n'
+                    line = 'neg/' + str(img) + '\n'
                     print(line)
                     with open('dataset/images/bg.txt','a') as f:
                         f.write(line)
