@@ -22,4 +22,8 @@ At the beginning of the project, there was to be only this model. It was a model
 
 f
 
+## The model
+
+f
+
 ## How to use it

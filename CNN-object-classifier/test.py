@@ -1,11 +1,13 @@
 import os
+from matplotlib import transforms
 import pandas as pd # type: ignore
 from torchvision.io import read_image
 import torch
 from torch.utils.data import Dataset
-from torchvision import datasets
-from torchvision.transforms import ToTensor
+from torchvision.transforms import ToTensor, Lambda, transforms
 import matplotlib.pyplot as plt
+from torch.utils.data import DataLoader
+from PIL import Image
 
 
 class CustomImageDataset(Dataset):
@@ -20,7 +22,7 @@ class CustomImageDataset(Dataset):
 
     def __getitem__(self, idx):
         img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
-        image = read_image(img_path)
+        image = Image.open(img_path)
         label = self.img_labels.iloc[idx, 1]
         if self.transform:
             image = self.transform(image)
@@ -28,6 +30,23 @@ class CustomImageDataset(Dataset):
             label = self.target_transform(label)
         return image, label
 
+transformation = transforms.Compose([transforms.Resize(224),
+                                    transforms.Grayscale(3),
+                                    ToTensor()])
+transformation_target = Lambda(lambda y: torch.zeros(
+    2, dtype=torch.float).scatter_(dim=0, index=torch.tensor(y), value=1))
 annotations = r'images/annotations.txt'
-image_location = r'images/global_data'
-data = CustomImageDataset(annotations, image_location)
+image_location = r'images'
+data = CustomImageDataset(annotations, image_location, transformation, transformation_target)
+train_dataloader = DataLoader(data, batch_size=64, shuffle=True)
+
+train_features, train_labels = next(iter(train_dataloader))
+print(f"Feature batch shape: {train_features.size()}")
+print(f"Labels batch shape: {train_labels.size()}")
+
+img = train_features[0].squeeze()
+label = train_labels[0]
+plt.imshow(img, cmap="gray")
+plt.show()
+print(f"dimension : {img.ndim}, dernièrer dimension : {img.shape[2]}")
+print(f"Label: {label}")
