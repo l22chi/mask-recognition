@@ -1,7 +1,6 @@
 import os
 from matplotlib import transforms
 import pandas as pd # type: ignore
-from torchvision.io import read_image
 import torch
 from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor, Lambda, transforms
@@ -24,6 +23,7 @@ class CustomImageDataset(Dataset):
         img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
         image = Image.open(img_path)
         label = self.img_labels.iloc[idx, 1]
+        # maybe add the class
         if self.transform:
             image = self.transform(image)
         if self.target_transform:
@@ -46,7 +46,9 @@ print(f"Labels batch shape: {train_labels.size()}")
 
 img = train_features[0].squeeze()
 label = train_labels[0]
-plt.imshow(img, cmap="gray")
+fig=plt.figure(figsize=(5,5))
+to_pil = transforms.ToPILImage()
+plt.axis('off')
+plt.imshow(to_pil(img))
 plt.show()
-print(f"dimension : {img.ndim}, dernièrer dimension : {img.shape[2]}")
 print(f"Label: {label}")
