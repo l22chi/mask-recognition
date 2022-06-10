@@ -2,13 +2,12 @@ import os
 from matplotlib import transforms
 import pandas as pd # type: ignore
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, random_split
 from torchvision.transforms import ToTensor, Lambda, transforms
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from PIL import Image
 from torch import nn
-import torchvision.models as models
 
 
 # Custom dataset class
@@ -101,7 +100,11 @@ transformation_target = Lambda(lambda y: torch.zeros(
 annotations = r'images/annotations.txt'
 image_location = r'images'
 data = CustomImageDataset(annotations, image_location, transformation, transformation_target)
-train_dataloader = DataLoader(data, batch_size=64, shuffle=True)
+train_size = int(0.8 * len(data))
+test_size = len(data) - train_size
+train_dataset, test_dataset = random_split(data, [train_size, test_size])
+train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_dataloader = DataLoader(test_dataset)
 
 # Getting info about the dataset
 train_features, train_labels = next(iter(train_dataloader))
@@ -122,7 +125,9 @@ print(f"Using {device} device")
 
 # Building the model with a loss function and an optimizer
 model = NeuralNetwork().to(device)
-print(model)
+print(f"Model structure: {model}\n\n")
+for name, param in model.named_parameters():
+    print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]} \n")
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
@@ -130,7 +135,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
     train_loop(train_dataloader, model, loss_fn, optimizer)
-    #test_loop(test_dataloader, model, loss_fn)
+    test_loop(test_dataloader, model, loss_fn)
 print("Done!")
 
 # Saving the model weights
