@@ -10,7 +10,7 @@ opencv/opencv-3.4
 venv/
 R-CNN-object-detection/
 selective-search/
-object-detection-(image)/
+object-detection-image/
 region-proposal-detection/
 classifiers-constructor/haarcascade.sh
 
