@@ -143,4 +143,3 @@ torch.save(model, 'model.pth')
 
 # Loading the model weights
 #model = torch.load('model.pth')
-
