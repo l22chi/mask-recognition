@@ -7,8 +7,11 @@ from torchvision.transforms import ToTensor, Lambda, transforms
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from PIL import Image
+from torch import nn
+import torchvision.models as models
 
 
+# Custom dataset class
 class CustomImageDataset(Dataset):
     def __init__(self, annotations_file, img_dir, transform=None, target_transform=None):
         self.img_labels = pd.read_csv(annotations_file)
@@ -30,7 +33,67 @@ class CustomImageDataset(Dataset):
             label = self.target_transform(label)
         return image, label
 
-transformation = transforms.Compose([transforms.Resize(224),
+
+# Custom NN class
+class NeuralNetwork(nn.Module):
+    def __init__(self):
+        super(NeuralNetwork, self).__init__()
+        self.flatten = nn.Flatten()
+        self.linear_relu_stack = nn.Sequential(
+            nn.Linear(267456, 512),
+            nn.ReLU(),
+            nn.Linear(512, 512),
+            nn.ReLU(),
+            nn.Linear(512, 2),
+        )
+
+    def forward(self, x):
+        x = self.flatten(x)
+        logits = self.linear_relu_stack(x)
+        return logits
+
+#Optimizing model parameters (train)
+def train_loop(dataloader, model, loss_fn, optimizer):
+    size = len(dataloader.dataset)
+    for batch, (X, y) in enumerate(dataloader):
+        # Compute prediction and loss
+        pred = model(X)
+        loss = loss_fn(pred, y)
+
+        # Backpropagation
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        if batch % 100 == 0:
+            loss, current = loss.item(), batch * len(X)
+            print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+
+
+#Optimizing model parameters (test)
+def test_loop(dataloader, model, loss_fn):
+    size = len(dataloader.dataset)
+    num_batches = len(dataloader)
+    test_loss, correct = 0, 0
+
+    with torch.no_grad():
+        for X, y in dataloader:
+            pred = model(X)
+            test_loss += loss_fn(pred, y).item()
+            correct += (pred.argmax(1) == y).type(torch.float).sum().item()
+
+    test_loss /= num_batches
+    correct /= size
+    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+
+# global parameter
+image_size = 224
+learning_rate = 1e-3
+batch_size = 64
+epochs = 5
+
+# Preparing the dataset
+transformation = transforms.Compose([transforms.Resize(image_size),
                                     transforms.Grayscale(3),
                                     ToTensor()])
 transformation_target = Lambda(lambda y: torch.zeros(
@@ -40,15 +103,39 @@ image_location = r'images'
 data = CustomImageDataset(annotations, image_location, transformation, transformation_target)
 train_dataloader = DataLoader(data, batch_size=64, shuffle=True)
 
+# Getting info about the dataset
 train_features, train_labels = next(iter(train_dataloader))
 print(f"Feature batch shape: {train_features.size()}")
 print(f"Labels batch shape: {train_labels.size()}")
-
 img = train_features[0].squeeze()
 label = train_labels[0]
 fig=plt.figure(figsize=(5,5))
 to_pil = transforms.ToPILImage()
 plt.axis('off')
 plt.imshow(to_pil(img))
-plt.show()
+#plt.show()
 print(f"Label: {label}")
+
+# If possible, use a GPU, else CPU
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using {device} device")
+
+# Building the model with a loss function and an optimizer
+model = NeuralNetwork().to(device)
+print(model)
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+
+# Optimizing model parameters
+for t in range(epochs):
+    print(f"Epoch {t+1}\n-------------------------------")
+    train_loop(train_dataloader, model, loss_fn, optimizer)
+    #test_loop(test_dataloader, model, loss_fn)
+print("Done!")
+
+# Saving the model weights
+torch.save(model, 'model.pth')
+
+# Loading the model weights
+#model = torch.load('model.pth')
+
