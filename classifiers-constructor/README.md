@@ -161,19 +161,19 @@ To use the opencv_traincascade tool, you must enter these different parameters:
 In case you used opencv_createsamples:
 
 ```bash
-opencv_traincascade -data  ../object-detection-(video)/classifiers -vec pos.vec -bg dataset/images/bg.txt -numPos 1800 -numNeg 900 -numStages 10 -w 24 -h 24
+opencv_traincascade -data  ../object-detection-video/classifiers -vec pos.vec -bg dataset/images/bg.txt -numPos 1800 -numNeg 900 -numStages 10 -w 24 -h 24
 ```
 
 In case you didn't use opencv_createsamples:
 
 ```bash
-opencv_traincascade -data  ../object-detection-(video)/classifiers -vec pos.vec -bg dataset/images/bg.txt -numPos 100 -numNeg 50 -numStages 10
+opencv_traincascade -data  ../object-detection-video/classifiers -vec pos.vec -bg dataset/images/bg.txt -numPos 100 -numNeg 50 -numStages 10
 ```
 
 In case OpenCV is misconfigured:
 
 ```bash
-opencv/build/bin/opencv_traincascade -data  ../object-detection-(video)/classifiers -vec pos.vec -bg dataset/images/bg.txt -numPos 100 -numNeg 50 -numStages 10
+opencv/build/bin/opencv_traincascade -data  ../object-detection-video/classifiers -vec pos.vec -bg dataset/images/bg.txt -numPos 100 -numNeg 50 -numStages 10
 ```
 
 ### Gain-train the model
@@ -181,7 +181,7 @@ opencv/build/bin/opencv_traincascade -data  ../object-detection-(video)/classifi
 This step consists of making training gains. You can start from the haarcascade.xml file trained by the opencv_traincasscade command and train the model on more stages. for example, you have specified -numStages 10, you can start from numStages 10 and go to numStages 20. To do this, you just need to relaunch the command, this time specifying: numStages 20, which gives:
 
 ```bash
-opencv_traincascade -data  ../object-detection-(video)/classifiers -vec pos.vec -bg dataset/images/bg.txt -numPos 1800 -numNeg 900 -numStages 20 -w 24 -h 24
+opencv_traincascade -data  ../object-detection-video/classifiers -vec pos.vec -bg dataset/images/bg.txt -numPos 1800 -numNeg 900 -numStages 20 -w 24 -h 24
 ```
 But **beware** , in order for this to work, you must invoke the command in the same way as the previous time (i.e. without changing any parameters). Otherwise it will lead to a different haarcascade.
 You will also have to be careful not to over-fit your model.

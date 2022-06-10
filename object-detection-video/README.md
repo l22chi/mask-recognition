@@ -9,7 +9,7 @@ This part aims to use the haarcascade classifiers in order to detect what they w
 ## Structure
 
 ```bash
-├── object-detection-(video)
+├── object-detection-video
 │   ├── classifiers
 │   │   ├── haarcascade_frontalface_default.xml
 │   │   └── Mouth.xml
@@ -37,7 +37,7 @@ It is possible to use these detectors in two ways:
 - The first is to let yourself be guided by the autorun.sh which will automatically execute the detection script:
 
 ```bash
-object-detection-(video)/autorun.sh
+object-detection-video/autorun.sh
 ```
 - The second is to run the python scripts yourself:
 
