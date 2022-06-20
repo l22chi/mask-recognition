@@ -8,8 +8,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from PIL import Image
 from torch import nn
-from captum.insights import AttributionVisualizer, Batch # type: ignore
-from captum.insights.attr_vis.features import ImageFeature # type: ignore
+from torch.utils.tensorboard import SummaryWriter
 
 
 # Custom dataset class
