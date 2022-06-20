@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from PIL import Image
 from torch import nn
+from captum.insights import AttributionVisualizer, Batch # type: ignore
+from captum.insights.attr_vis.features import ImageFeature # type: ignore
 
 
 # Custom dataset class
@@ -37,21 +39,34 @@ class CustomImageDataset(Dataset):
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.flatten = nn.Flatten()
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(267456, 512),
-            nn.ReLU(),
-            nn.Linear(512, 512),
-            nn.ReLU(),
-            nn.Linear(512, 2),
+
+        self.cnn_layers = nn.Sequential(
+            # Defining a 2D convolution layer
+            nn.Conv2d(1, 4, kernel_size=3),
+            nn.BatchNorm2d(4),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2),
+            # Defining another 2D convolution layer
+            nn.Conv2d(4, 4, kernel_size=3),
+            nn.BatchNorm2d(4),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2),
         )
 
+        self.linear_layers = nn.Sequential(
+            # 4 channels out with size of 54 by 98 (corresponding to an image of 224*398)
+            nn.Linear(54 * 98 * 4, 2)
+        )
+
+
     def forward(self, x):
-        x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
+        x = self.cnn_layers(x)
+        x = x.view(x.size(0), -1)
+        logits = self.linear_layers(x)
         return logits
 
-#Optimizing model parameters (train)
+
+# Optimizing model parameters (train)
 def train_loop(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
     for batch, (X, y) in enumerate(dataloader):
@@ -64,12 +79,12 @@ def train_loop(dataloader, model, loss_fn, optimizer):
         loss.backward()
         optimizer.step()
 
-        if batch % 100 == 0:
+        if batch % 10 == 0:
             loss, current = loss.item(), batch * len(X)
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 
-#Optimizing model parameters (test)
+# Optimizing model parameters (test)
 def test_loop(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
@@ -86,14 +101,15 @@ def test_loop(dataloader, model, loss_fn):
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
 # global parameter
+# Resizing the image by 224 will give it a sizee of 224 by 398
 image_size = 224
 learning_rate = 1e-3
-batch_size = 64
-epochs = 5
+batch_size = 100
+epochs = 1
 
 # Preparing the dataset
 transformation = transforms.Compose([transforms.Resize(image_size),
-                                    transforms.Grayscale(3),
+                                    transforms.Grayscale(1),
                                     ToTensor()])
 transformation_target = Lambda(lambda y: torch.zeros(
     2, dtype=torch.float).scatter_(dim=0, index=torch.tensor(y), value=1))
@@ -123,13 +139,14 @@ print(f"Label: {label}")
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using {device} device")
 
-# Building the model with a loss function and an optimizer
+'''# Building the model with a loss function and an optimizer
 model = NeuralNetwork().to(device)
 print(f"Model structure: {model}\n\n")
 for name, param in model.named_parameters():
     print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]} \n")
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+# optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # Optimizing model parameters
 for t in range(epochs):
@@ -139,7 +156,10 @@ for t in range(epochs):
 print("Done!")
 
 # Saving the model weights
-torch.save(model, 'model.pth')
+torch.save(model, 'model.pth')'''
 
 # Loading the model weights
-#model = torch.load('model.pth')
+model = torch.load('model.pth')
+
+
+
