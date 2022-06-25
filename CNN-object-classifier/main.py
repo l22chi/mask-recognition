@@ -8,8 +8,6 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from PIL import Image
 from torch import nn
-import torchvision
-import numpy as np
 
 # Custom dataset class
 class CustomImageDataset(Dataset):
@@ -136,7 +134,7 @@ def launch_train_model(image_size = 224, learning_rate = 1e-3, batch_size = 100,
     print("Done!")
 
     # Saving the model weights
-    torch.save(model, 'model.pth')
+    torch.save(model, 'maskRecognitionModel.pth')
 
 
 if __name__ == "__main__":
