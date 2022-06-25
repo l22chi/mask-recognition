@@ -13,9 +13,10 @@ selective-search/
 object-detection-image/
 region-proposal-detection/
 classifiers-constructor/haarcascade.sh
-
+CNN-object-classifier/tensorboard_vizu.ipynb
 .DS_Store
-
+CNN-object-classifier/which_dim.py
+CNN-object-classifier/runs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
