@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from PIL import Image
 from torch import nn
-from torch.utils.tensorboard import SummaryWriter
-
+import torchvision
+import numpy as np
 
 # Custom dataset class
 class CustomImageDataset(Dataset):
@@ -64,7 +64,6 @@ class NeuralNetwork(nn.Module):
         logits = self.linear_layers(x)
         return logits
 
-
 # Optimizing model parameters (train)
 def train_loop(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
@@ -99,66 +98,47 @@ def test_loop(dataloader, model, loss_fn):
     correct /= size
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
-# global parameter
-# Resizing the image by 224 will give it a sizee of 224 by 398
-image_size = 224
-learning_rate = 1e-3
-batch_size = 100
-epochs = 1
 
-# Preparing the dataset
-transformation = transforms.Compose([transforms.Resize(image_size),
+def launch_train_model(image_size = 224, learning_rate = 1e-3, batch_size = 100, epochs = 1):
+
+    transformation = transforms.Compose([transforms.Resize(image_size),
                                     transforms.Grayscale(1),
                                     ToTensor()])
-transformation_target = Lambda(lambda y: torch.zeros(
-    2, dtype=torch.float).scatter_(dim=0, index=torch.tensor(y), value=1))
-annotations = r'images/annotations.txt'
-image_location = r'images'
-data = CustomImageDataset(annotations, image_location, transformation, transformation_target)
-train_size = int(0.8 * len(data))
-test_size = len(data) - train_size
-train_dataset, test_dataset = random_split(data, [train_size, test_size])
-train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-test_dataloader = DataLoader(test_dataset)
+    transformation_target = Lambda(lambda y: torch.zeros(
+        2, dtype=torch.float).scatter_(dim=0, index=torch.tensor(y), value=1))
+    annotations = r'images/annotations.txt'
+    image_location = r'images'
+    data = CustomImageDataset(annotations, image_location, transformation, transformation_target)
+    train_size = int(0.8 * len(data))
+    test_size = len(data) - train_size
+    train_dataset, test_dataset = random_split(data, [train_size, test_size])
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    test_dataloader = DataLoader(test_dataset)
+    train_features, train_labels = next(iter(train_dataloader))
 
-# Getting info about the dataset
-train_features, train_labels = next(iter(train_dataloader))
-print(f"Feature batch shape: {train_features.size()}")
-print(f"Labels batch shape: {train_labels.size()}")
-img = train_features[0].squeeze()
-label = train_labels[0]
-fig=plt.figure(figsize=(5,5))
-to_pil = transforms.ToPILImage()
-plt.axis('off')
-plt.imshow(to_pil(img))
-#plt.show()
-print(f"Label: {label}")
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"Using {device} device")
 
-# If possible, use a GPU, else CPU
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using {device} device")
+    # Building the model with a loss function and an optimizer
+    model = NeuralNetwork().to(device)
+    print(f"Model structure: {model}\n\n")
+    for name, param in model.named_parameters():
+        print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]} \n")
+    loss_fn = nn.CrossEntropyLoss()
+    # optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-'''# Building the model with a loss function and an optimizer
-model = NeuralNetwork().to(device)
-print(f"Model structure: {model}\n\n")
-for name, param in model.named_parameters():
-    print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]} \n")
-loss_fn = nn.CrossEntropyLoss()
-# optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    # Optimizing model parameters
+    for t in range(epochs):
+        print(f"Epoch {t+1}\n-------------------------------")
+        train_loop(train_dataloader, model, loss_fn, optimizer)
+        test_loop(test_dataloader, model, loss_fn)
+    print("Done!")
 
-# Optimizing model parameters
-for t in range(epochs):
-    print(f"Epoch {t+1}\n-------------------------------")
-    train_loop(train_dataloader, model, loss_fn, optimizer)
-    test_loop(test_dataloader, model, loss_fn)
-print("Done!")
-
-# Saving the model weights
-torch.save(model, 'model.pth')'''
-
-# Loading the model weights
-model = torch.load('model.pth')
+    # Saving the model weights
+    torch.save(model, 'model.pth')
 
 
+if __name__ == "__main__":
 
+    launch_train_model()
